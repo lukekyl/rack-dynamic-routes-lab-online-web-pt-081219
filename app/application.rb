@@ -9,9 +9,15 @@ class Application
     if req.path.match(/items/)
 
       item_title = req.path.split("/items/").last #turn /songs/Sorry into Sorry
-      item = @@items.find{|s| s.title == item_title}
-
-      resp.write item.price
+      if @@items.include?(item_title)
+        item = @@items.find{|s| s.title == item_title}
+        resp.write item.price
+      else
+        resp.write "Item not found"
+        resp.status 400
+    else
+      resp.write "Page not found"
+      resp.status 404
     end
 
     resp.finish
